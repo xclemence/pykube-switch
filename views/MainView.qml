@@ -5,6 +5,8 @@ import QtQuick.Controls.Material 2.1
 import QtQuick.Controls 2.3
 import Qt.labs.platform 1.1
 
+import "./controls"
+
 ApplicationWindow {
     id: mainWindow
     flags: Qt.Window | Qt.FramelessWindowHint
@@ -41,6 +43,11 @@ ApplicationWindow {
         //     Layout.fillHeight: true
         // }
 
+    }
+
+    ResizeArea {
+        anchors.fill: parent;
+        mainWindow: mainWindow
     }
 
     SystemTrayIcon {

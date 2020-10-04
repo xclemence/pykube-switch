@@ -6,12 +6,14 @@ from PySide2.QtGui import QGuiApplication
 from PySide2.QtQml import QQmlApplicationEngine
 from PySide2.QtQuickControls2 import QQuickStyle
 
-from contexts.main_context import MainContext
+
+from contexts.MainContext import MainContext
 
 def shutdown():
     del globals()["engine"]
 
 if __name__ == '__main__':
+
     main_context = MainContext()
     app = QGuiApplication(sys.argv)
     app.aboutToQuit.connect(shutdown)

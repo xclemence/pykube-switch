@@ -2,7 +2,7 @@ import QtQuick 2.0
 import QtQuick.Layouts 1.11
 import QtQuick.Window 2.1
 import QtQuick.Controls.Material 2.1
-import QtQuick.Controls 2.3
+import QtQuick.Controls 2.15
 import Qt.labs.platform 1.1
 
 import "./controls"
@@ -38,10 +38,11 @@ ApplicationWindow {
         anchors.topMargin: 5
         anchors.bottomMargin: 5
        
-        // ClustersView {
-        //     Layout.fillWidth: true
-        //     Layout.fillHeight: true
-        // }
+        ClustersView {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            model: context.clusters_context
+        }
 
     }
 
@@ -55,6 +56,11 @@ ApplicationWindow {
         icon.source: "images/Kube.png"
 
         menu: Menu {
+            Menu {
+                MenuItem { text: "context1" }
+                MenuItem { text: "context2" }
+                MenuItem { text: "context3" }
+            }
             MenuItem {
                 text: qsTr("Restore")
                 onTriggered: {
@@ -62,7 +68,10 @@ ApplicationWindow {
                     mainWindow.visible = true
                 }
             }
+            MenuItem { separator : true }
             MenuItem {
+                icon.source: "images/Kube.png"
+
                 text: qsTr("Quit")
                 onTriggered: Qt.quit()
             }

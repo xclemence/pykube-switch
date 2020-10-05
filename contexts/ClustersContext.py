@@ -1,4 +1,5 @@
 from PySide2.QtCore import QObject, Slot, Property, Signal
+from PySide2.QtWidgets import QFileDialog
 from pathlib import Path
 from os.path import join
 
@@ -10,10 +11,12 @@ from models.Cluster import Cluster
 
 class ClustersContext(QObject):
 
-    _clusters = ListModelContext([], ["name"]) 
+    _clusters = ListModelContext([], Cluster) 
+    service: ClusterMetaDataService
 
     def __init__(self):
         QObject.__init__(self)
+        self.service = ClusterMetaDataService(self.get_working_directory())
         self.load_clusters()
 
     def get_clusters(self):
@@ -33,13 +36,16 @@ class ClustersContext(QObject):
         return join(str(Path.home()), '.pykubeswitch')
 
     def load_clusters(self):
-        service = ClusterMetaDataService(self.get_working_directory())
-        test = service.load()
-        # clusters = [ClusterItemContext(item) for item in test]
-
+        test = self.service.load()
         self.clusters = ListModelContext(test, Cluster)
    
     @Slot()
     def refresh(self):
         self.load_clusters()
     
+
+    @Slot(str)
+    def add_file(self, file_path):
+        item = self.service.read_from_file(file_path)
+        self.clusters.append(item)
+        self.service.save(self.clusters.items)

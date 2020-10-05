@@ -12,7 +12,7 @@ class ListModelContext(QAbstractListModel):
         return [name for name, val in inspect.getmembers(self.item_type) if not name.startswith('_') and not callable(val)]
 
     def append(self, item):
-        self.beginInsertRows(QtCore.QModelIndex(),
+        self.beginInsertRows(QModelIndex(),
                              self.rowCount(),
                              self.rowCount())
 

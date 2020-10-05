@@ -18,6 +18,9 @@ if __name__ == '__main__':
     app = QGuiApplication(sys.argv)
     app.aboutToQuit.connect(shutdown)
     
+    app.setOrganizationName("xavier CLEMENCE")
+    app.setOrganizationDomain("xavier CLEMENCE")
+    
     QQuickStyle.setStyle("Material")
     engine = QQmlApplicationEngine()
 

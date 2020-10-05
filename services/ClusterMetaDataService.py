@@ -1,6 +1,10 @@
-from models.Cluster import Cluster
 from os import path, makedirs
 import json
+import yaml
+import urllib
+import urllib.request
+
+from models.Cluster import Cluster
 
 class ClusterMetaDataService:
     _meta_data_file_name = "clusters.json"
@@ -32,4 +36,17 @@ class ClusterMetaDataService:
             restults = json.load(file)
         
         return list(map(lambda x: Cluster(**x), restults))
+    
+    def read_from_file(self, file_url):
+        
+        with urllib.request.urlopen(file_url) as response:
+            yaml_content = yaml.safe_load(response.read().decode('utf-8'))
 
+        name = yaml_content.get('current-context')
+
+        cluster = next(c for c in yaml_content.get('clusters') if c.get('name') == name )
+
+        server = cluster.get('cluster').get('server')
+
+        file_name = path.basename(file_url)
+        return Cluster(name, name, file_name, server)

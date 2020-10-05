@@ -3,8 +3,9 @@ import QtQuick.Layouts 1.11
 import QtQuick.Controls 2.1
 import QtQuick.Window 2.1
 import QtQuick.Controls.Material 2.1
+import QtQuick.Dialogs 1.0
 
-
+import "./controls"
 
 Item {
     id: root
@@ -15,6 +16,14 @@ Item {
         Label {
             text: index
         }
+    }
+
+    FileDialog {
+        id: fileDialog
+        title: "Please choose a file"
+        folder: shortcuts.home
+        nameFilters: [ "All files (*)" ]
+        onAccepted: model.add_file(fileDialog.fileUrl)
     }
 
     RowLayout {
@@ -53,6 +62,7 @@ Item {
                         Layout.fillWidth: true
                         text: "Import"
                         font.capitalization: Font.MixedCase 
+                        onClicked: fileDialog.open()
                     }
                     Button {
                         Layout.fillWidth: true

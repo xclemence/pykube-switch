@@ -44,6 +44,8 @@ Item {
                     clip: true
 
                     model: root.model.clusters
+
+                    onCurrentItemChanged: root.model.onSelectedIndex(listView.currentIndex)
                     
                     delegate: ItemDelegate {
                         width: parent.width
@@ -79,9 +81,10 @@ Item {
             Layout.fillHeight: true
 
             title: qsTr("Cluster details")
-            // ClusterItemView {
-            //     anchors.fill: parent;
-            // }
+            ClusterItemView {
+                anchors.fill: parent;
+                model: root.model.selected_cluster
+            }
         }
     }
 }

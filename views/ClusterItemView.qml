@@ -1,95 +1,109 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.11
 import QtQuick.Controls 2.1
-import QtQuick.Window 2.1
-import QtQuick.Controls.Material 2.1
 
-Rectangle {
-    // anchors.fill: parent
+import "./controls"
+
+Item {
     id: root
     property var model
+    signal deleted(var cluster)
 
-    color: "transparent"
-    GridLayout {
+    visible: model
+
+    ColumnLayout{
+
         anchors.fill: parent
-        id: grid
-        columns: 2
-        rows: 4
-        Rectangle {
-            Layout.column: 0
-            Layout.row: 0
-            
+
+        ClusterItemActions {
+            id: clusterActions
             Layout.fillWidth: true
-            color: "blue"
+            Layout.preferredHeight: 50
 
-            Label {
-                id: nameLabel
-                text: "Name:"
-            }
+            canApply: !root.model.is_current && root.model.has_file
+
+            onApplyClicked: root.model.apply()
+            onDeleteClicked: root.deleted(root.model)
+            onCopyPasswordClicked: root.model.copy_password_to_clipbord()
         }
 
-        TextField {
-            Layout.column: 1
-            Layout.row: 0
-            Layout.alignment: Qt.AlignVCenter
+        Item {
             Layout.fillWidth: true
-
-            id: nameText
-            text: root.model.name
-        }
-
-        Label {
-            Layout.column: 0
-            Layout.row: 1
-            Layout.alignment: Qt.AlignVCenter
-            Layout.fillWidth: true
-
-            id: serverLabel
-            text: "Server:"
-        }
-
-        TextField {
-            Layout.column: 1
-            Layout.row: 1
-            Layout.alignment: Qt.AlignVCenter
-            Layout.fillWidth: true
-
-            id: serverText
-            text: root.model.server
-        }
-
-        Label {
-            Layout.column: 0
-            Layout.row: 2
-            Layout.alignment: Qt.AlignVCenter
-            Layout.fillWidth: true
-
-            id: hasPasswordLabel
-            text: "has password:"
-        }
-
-        CheckBox {
-            Layout.column: 1
-            Layout.row: 2
-            id: hasPasswordCheckBox
-            anchors.leftMargin: 0
-        }
-
-        RowLayout {
-            Layout.row: 3
-            Layout.columnSpan: 2
-            Layout.alignment: Qt.AlignRight
-
             Layout.fillHeight: true
-            Button {
-                text: "Set password"
-                font.capitalization: Font.MixedCase 
-            }
 
-            Button {
-                text: "Copy password to clipboard"
-                font.capitalization: Font.MixedCase 
-                onClicked: root.model.copy_password_to_clipbord()
+            GridLayout {
+                anchors.fill: parent
+
+                id: grid
+                columns: 2
+
+           
+                Label { 
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.fillWidth: true
+                    text: "Display name:" 
+                }
+
+                TextField {
+                    id: displayNameInput
+                    selectByMouse: true
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.fillWidth: true
+                    text: root.model.display_name
+                    onTextChanged : root.model.display_name = text
+                }
+
+                Label { 
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.fillWidth: true
+                    id: nameLabel 
+                    text: "Name:" 
+                }
+
+                Label {
+                    Layout.alignment: Qt.AlignVCenter
+                    text: root.model ? root.model.name : ''
+                }
+
+                Label {
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.fillWidth: true
+
+                    id: serverLabel
+                    text: "Server:"
+                }
+
+                Label {
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.fillWidth: true
+
+                    id: serverText
+                    text: root.model ? root.model.server : ''
+                }
+
+                Label {
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.fillWidth: true
+                    text: "File:"
+                }
+
+                Label {
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.fillWidth: true
+                    text: root.model ? root.model.file_name : ''
+                }
+
+                Label {
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.fillWidth: true
+                    id: hasPasswordLabel
+                    text: "has password:"
+                }
+
+                CheckBox {
+                    id: hasPasswordCheckBox
+                    anchors.leftMargin: 0
+                }
             }
         }
     }

@@ -1,8 +1,6 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.11
 import QtQuick.Controls 2.1
-import QtQuick.Window 2.1
-import QtQuick.Controls.Material 2.1
 import QtQuick.Dialogs 1.0
 
 import "./controls"
@@ -45,17 +43,18 @@ Item {
 
                     model: root.model.clusters
 
-                    onCurrentItemChanged: root.model.onSelectedIndex(listView.currentIndex)
+                    onCurrentItemChanged: root.model.selected_index(listView.currentIndex)
                     
                     delegate: ItemDelegate {
                         width: parent.width
-                        text: model.display_name 
+                        text: model.display_name + (model.is_current ? " (current)" : "")
                         highlighted: ListView.isCurrentItem
                         onClicked: {
                             if (listView.currentIndex != index) {
                                 listView.currentIndex = index
                             }
                         }
+
                     }
                 }
 
@@ -84,6 +83,7 @@ Item {
             ClusterItemView {
                 anchors.fill: parent;
                 model: root.model.selected_cluster
+                onDeleted: root.model.delete(cluster)
             }
         }
     }

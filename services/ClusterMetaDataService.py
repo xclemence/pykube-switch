@@ -37,10 +37,10 @@ class ClusterMetaDataService:
         
         return list(map(lambda x: Cluster(**x), restults))
     
-    def read_from_file(self, file_url):
+    def read_from_file(self, file_path):
         
-        with urllib.request.urlopen(file_url) as response:
-            yaml_content = yaml.safe_load(response.read().decode('utf-8'))
+        with open(file_path, 'r') as file:
+            yaml_content = yaml.safe_load(file)
 
         name = yaml_content.get('current-context')
 
@@ -48,5 +48,5 @@ class ClusterMetaDataService:
 
         server = cluster.get('cluster').get('server')
 
-        file_name = path.basename(file_url)
+        file_name = path.basename(file_path)
         return Cluster(name, name, file_name, server)

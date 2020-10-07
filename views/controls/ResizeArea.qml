@@ -1,9 +1,5 @@
 import QtQuick 2.0
-import QtQuick.Layouts 1.11
 import QtQuick.Controls 2.1
-import QtQuick.Window 2.1
-import QtQuick.Controls.Material 2.1
-import QtQuick.Shapes 1.15
 
 Item {
     id: root
@@ -15,18 +11,18 @@ Item {
     property int borderSize: 5
     property int cornerSize: 10
 
-    function bottomResize(mouseY){
+    function bottomResize(mouseY,previousY ){
         var dy = mouseY - previousY
         mainWindow.setHeight(mainWindow.height + dy)
     }
 
-    function leftResize(mouseX){
+    function leftResize(mouseX, previousX){
         var dx = mouseX - previousX
         mainWindow.setX(mainWindow.x + dx)
         mainWindow.setWidth(mainWindow.width - dx)
     }
 
-    function rightResize(mouseX){
+    function rightResize(mouseX, previousX){
         var dx = mouseX - previousX
         mainWindow.setWidth(mainWindow.width + dx)
     }
@@ -46,7 +42,7 @@ Item {
         
         onPressed: { previousY = mouseY }
  
-        onMouseYChanged: bottomResize(mouseY)
+        onMouseYChanged: bottomResize(mouseY, root.previousY)
     }
  
     MouseArea {
@@ -63,7 +59,7 @@ Item {
  
         onPressed: { previousX = mouseX }
  
-        onMouseXChanged: leftResize(mouseX)
+        onMouseXChanged: leftResize(mouseX, root.previousX)
     }
  
     MouseArea {
@@ -80,7 +76,7 @@ Item {
  
         onPressed: { previousX = mouseX }
  
-        onMouseXChanged: rightResize(mouseX);
+        onMouseXChanged: rightResize(mouseX, root.previousX)
     }
 
     MouseArea {
@@ -98,8 +94,8 @@ Item {
             previousY = mouseY
         }
  
-        onMouseXChanged: rightResize(mouseX)
-        onMouseYChanged: bottomResize(mouseY)
+        onMouseXChanged: rightResize(mouseX, root.previousX)
+        onMouseYChanged: bottomResize(mouseY, root.previousY)
     }
 
      MouseArea {
@@ -117,8 +113,8 @@ Item {
             previousY = mouseY
         }
  
-        onMouseXChanged: leftResize(mouseX)
-        onMouseYChanged: bottomResize(mouseY)
+        onMouseXChanged: leftResize(mouseX, root.previousX)
+        onMouseYChanged: bottomResize(mouseY, root.previousY)
     }
 }
 

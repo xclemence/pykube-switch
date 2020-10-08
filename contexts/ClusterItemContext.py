@@ -82,6 +82,3 @@ class ClusterItemContext(QObject):
     def copy_password_to_clipbord(self):
         pyperclip.copy(self.cluster.password)
 
-    @Slot()
-    def apply(self):
-        self.configService.apply(self.file_name)

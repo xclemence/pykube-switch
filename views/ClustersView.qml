@@ -2,12 +2,15 @@ import QtQuick 2.14
 import QtQuick.Layouts 1.11
 import QtQuick.Controls 2.14
 import QtQuick.Dialogs 1.0
+import Qt.labs.platform 1.1
+import QtQuick.Window 2.1
 
 import "./controls"
 
 Item {
     id: root
     property var model
+    property ApplicationWindow window
 
     Component {
         id: clusterItemTemplate
@@ -57,7 +60,6 @@ Item {
                                 listView.currentIndex = index
                             }
                         }
-
                     }
                 }
 
@@ -87,7 +89,52 @@ Item {
                 anchors.fill: parent;
                 model: root.model.selected_cluster
                 onDeleted: root.model.delete(cluster)
+                onApplied: root.model.apply(cluster.file_name)
                 onDataChanged: root.model.update(cluster)
+            }
+        }
+    }
+
+    SystemTrayIcon {
+        visible: true
+        icon.source: "images/Kube.png"
+
+        menu: Menu {
+            Menu {
+                title: "Contexts"
+                id: contextMenu
+
+                Instantiator {
+                    model: root.model.clusters
+                    MenuItem {
+                        text: model.display_name
+                        checked : model.is_current
+                        enabled: model.has_file
+                        onTriggered: root.model.apply(model.file_name)
+                    }
+
+                    // The trick is on those two lines
+                    onObjectAdded: contextMenu.insertItem(index, object)
+                    onObjectRemoved: contextMenu.removeItem(object)
+                }
+
+            }
+ 
+            MenuItem { separator : true }
+            MenuItem {
+                text: qsTr("Restore")
+                onTriggered: {
+                    window.visibility = Window.AutomaticVisibility
+                    window.visible = true
+                }
+            }
+            
+            MenuItem { separator : true }
+            MenuItem {
+                icon.source: "images/Kube.png"
+
+                text: qsTr("Quit")
+                onTriggered: Qt.quit()
             }
         }
     }

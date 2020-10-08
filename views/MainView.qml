@@ -3,7 +3,6 @@ import QtQuick.Layouts 1.11
 import QtQuick.Window 2.1
 import QtQuick.Controls.Material 2.1
 import QtQuick.Controls 2.15
-import Qt.labs.platform 1.1
 
 import "./controls"
 
@@ -42,6 +41,7 @@ ApplicationWindow {
             Layout.fillWidth: true
             Layout.fillHeight: true
             model: context.clusters_context
+            window: mainWindow
         }
 
     }
@@ -49,32 +49,5 @@ ApplicationWindow {
     ResizeArea {
         anchors.fill: parent;
         mainWindow: mainWindow
-    }
-
-    SystemTrayIcon {
-        visible: true
-        icon.source: "images/Kube.png"
-
-        menu: Menu {
-            Menu {
-                MenuItem { text: "context1" }
-                MenuItem { text: "context2" }
-                MenuItem { text: "context3" }
-            }
-            MenuItem {
-                text: qsTr("Restore")
-                onTriggered: {
-                    mainWindow.visibility = Window.AutomaticVisibility
-                    mainWindow.visible = true
-                }
-            }
-            MenuItem { separator : true }
-            MenuItem {
-                icon.source: "images/Kube.png"
-
-                text: qsTr("Quit")
-                onTriggered: Qt.quit()
-            }
-        }
     }
 }

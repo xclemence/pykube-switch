@@ -57,13 +57,14 @@ class ClustersContext(QObject):
         self.selected_cluster_changed.emit()
 
     ####################
-
     
     def get_working_directory(self):
         return join(str(Path.home()), '.pykubeswitch')
 
+
     def get_kube_directory(self):
         return join(str(Path.home()), '.kube')
+
 
     def load_clusters(self):
         test = self.metadata_service.load()
@@ -72,7 +73,8 @@ class ClustersContext(QObject):
         self.item_service.refresh(items)
 
         self.clusters = ListModelContext(items, ClusterItemContext)
-   
+
+
     @Slot()
     def refresh(self):
         self.load_clusters()
@@ -89,12 +91,15 @@ class ClustersContext(QObject):
         new_cluster = ClusterItemContext(item, self.config_service)
         self.clusters.append(new_cluster)
 
+        self.item_service.refresh(self.clusters)
+
         self.save_clusters()
 
 
     def save_clusters(self):
         items = [item_context.cluster for item_context in self.clusters.items]
         self.metadata_service.save(items)
+
 
     @Slot(int)
     def selected_index(self, index):
@@ -104,6 +109,7 @@ class ClustersContext(QObject):
 
         cluster = self.clusters.items[index]
         self.selected_cluster = cluster
+
 
     @Slot(ClusterItemContext)
     def delete(self, cluster):
@@ -117,3 +123,9 @@ class ClustersContext(QObject):
         self.clusters.update(cluster)
         self.save_clusters()
 
+
+    @Slot(str)
+    def apply(self, file):
+        self.config_service.apply(file)
+        self.item_service.refresh_is_current(self.clusters.items)
+        self.clusters.update_all()

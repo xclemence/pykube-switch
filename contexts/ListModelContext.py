@@ -31,6 +31,9 @@ class ListModelContext(QAbstractListModel):
         index = self.index(item_index, 0)
         self.dataChanged.emit(index, index)
 
+    def update_all(self):
+        self.dataChanged.emit(self.index(0), self.index(len(self.items) - 1))
+
     def data(self, index, role):
         key = self.schema[role]
         return getattr(self.items[index.row()], key)
@@ -47,7 +50,3 @@ class ListModelContext(QAbstractListModel):
             index += 1
         
         return role_names
-
-    def test(self):
-        
-        pass

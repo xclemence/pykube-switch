@@ -8,6 +8,7 @@ Item {
     id: root
     property var model
     signal deleted(var cluster)
+    signal applied(var cluster)
     signal dataChanged(var cluster)
 
     visible: model
@@ -23,7 +24,7 @@ Item {
 
             canApply: !root.model.is_current && root.model.has_file
 
-            onApplyClicked: root.model.apply()
+            onApplyClicked: root.applied(root.model)
             onDeleteClicked: root.deleted(root.model)
             onCopyPasswordClicked: root.model.copy_password_to_clipbord()
         }

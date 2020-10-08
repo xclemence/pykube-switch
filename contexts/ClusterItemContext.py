@@ -14,6 +14,7 @@ class ClusterItemContext(QObject):
     is_current_changed = Signal()
     has_file_changed = Signal()
     has_password_changed = Signal()
+    password_changed = Signal()
 
     _is_current = False
     _has_file = True
@@ -35,6 +36,20 @@ class ClusterItemContext(QObject):
 
         self.cluster.display_name = value
         self.display_name_changed.emit()
+
+    ##############################
+    @Property(str, notify=password_changed)
+    def password(self):
+        return self.cluster.password
+
+    @password.setter
+    def set_display_name(self, value):
+        if(self.cluster.password == value):
+            return
+
+        self.cluster.password = value
+        self.password_changed.emit()
+        self.has_password_changed.emit()
 
     ##############################
     @Property(str, notify=name_changed)

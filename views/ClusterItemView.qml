@@ -22,11 +22,12 @@ Item {
             Layout.fillWidth: true
             Layout.preferredHeight: 50
 
-            canApply: !root.model.is_current && root.model.has_file
+            model: root.model
 
             onApplyClicked: root.applied(root.model)
             onDeleteClicked: root.deleted(root.model)
             onCopyPasswordClicked: root.model.copy_password_to_clipbord()
+            onPasswordChanged: root.dataChanged(root.model)
         }
 
         Item {
@@ -52,7 +53,7 @@ Item {
                     Layout.alignment: Qt.AlignVCenter
                     Layout.fillWidth: true
                     text: root.model.display_name
-                    onTextChanged: {
+                    onEditingFinished: {
                         root.model.display_name = text
                         root.dataChanged(root.model)
                     }

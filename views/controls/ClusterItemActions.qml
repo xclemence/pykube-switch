@@ -1,6 +1,6 @@
-import QtQuick 2.0
+import QtQuick 2.15
 import QtQuick.Layouts 1.11
-import QtQuick.Controls 2.1
+import QtQuick.Controls 2.15
 
 Item {
     id: root
@@ -10,8 +10,7 @@ Item {
     signal deleteClicked
     signal setPasswordClicked
     signal copyPasswordClicked
-
-    property alias canApply : applyButton.enabled
+    signal passwordChanged
 
     RowLayout {
 
@@ -26,6 +25,7 @@ Item {
                 text: "Apply"
                 font.capitalization: Font.MixedCase 
                 onClicked: root.applyClicked()
+                enabled: !root.model.is_current && root.model.has_file
             }
 
             Button {
@@ -44,10 +44,18 @@ Item {
                 id: setPasswordButton
                 text: "Set password"
                 font.capitalization: Font.MixedCase 
+                onClicked: popup.open()
+
+                SetPasswordPopup {
+                    id: popup
+                    model: root.model
+                    onPasswordChanged: root.passwordChanged()
+                }
             }
             
             Button {
                 id: copyPasswordButton
+                enabled: model.has_password
                 text: "Copy password to clipboard"
                 font.capitalization: Font.MixedCase 
                 onClicked: root.copyPasswordClicked()

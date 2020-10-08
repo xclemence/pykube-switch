@@ -17,12 +17,23 @@ class ListModelContext(QAbstractListModel):
         self.items.append(item)
         self.endInsertRows()
 
+    def remove(self, item):
+        item_index = self.items.index(item)
+
+        self.beginRemoveRows(QModelIndex(), item_index, item_index)
+
+        self.items.remove(item)
+        self.endRemoveRows()
+
+    def update(self, item):
+        item_index = self.items.index(item)
+
+        index = self.index(item_index, 0)
+        self.dataChanged.emit(index, index)
+
     def data(self, index, role):
         key = self.schema[role]
         return getattr(self.items[index.row()], key)
-
-    def setData(self, index, value, role):
-        pass
 
     def rowCount(self, parent=QModelIndex()):
         return len(self.items)
@@ -36,3 +47,7 @@ class ListModelContext(QAbstractListModel):
             index += 1
         
         return role_names
+
+    def test(self):
+        
+        pass

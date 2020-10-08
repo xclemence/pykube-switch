@@ -1,4 +1,5 @@
-from PySide2.QtCore import QObject, Slot, Property, Signal
+from PySide2.QtCore import QObject, Slot, Property, Signal, QModelIndex
+
 from PySide2.QtWidgets import QFileDialog
 from pathlib import Path
 from os.path import join
@@ -15,47 +16,45 @@ from models.Cluster import Cluster
 class ClustersContext(QObject):
 
     _clusters = ListModelContext([], ClusterItemContext) 
-    service: ClusterMetaDataService
-    _selected_cluster = None
+    _selected_cluster: ClusterItemContext = None
+
+    clusters_changed = Signal()
+    selected_cluster_changed = Signal()
 
     def __init__(self):
         QObject.__init__(self)
-        self.service = ClusterMetaDataService(self.get_working_directory())
+        self.metadata_service = ClusterMetaDataService(self.get_working_directory())
         self.config_service = ClusterConfigService(self.get_working_directory(), self.get_kube_directory())
-        self.item_service = ClusterItemService(self.config_service)
+        self.item_service = ClusterItemService(self.config_service, self.metadata_service)
         self.load_clusters()
 
     ##################################
 
-    def get_clusters(self):
+    @Property(QObject, notify=clusters_changed)
+    def clusters(self):
         return self._clusters
 
+    @clusters.setter
     def set_clusters(self, value):
+        if (self._clusters == value):
+            return
+
         self._clusters = value
         self.clusters_changed.emit()
 
-    @Signal
-    def clusters_changed(self):
-        pass
-
-    clusters = Property(QObject, get_clusters, set_clusters, notify=clusters_changed)
-
     ##############################
 
-    _selected_cluster: ClusterItemContext
-
-    def get_selected_cluster(self):
+    @Property(ClusterItemContext, notify=selected_cluster_changed)
+    def selected_cluster(self):
         return self._selected_cluster
 
+    @selected_cluster.setter
     def set_selected_cluster(self, value):
+        if(self._selected_cluster == value):
+            return
+
         self._selected_cluster = value
         self.selected_cluster_changed.emit()
-
-    @Signal
-    def selected_cluster_changed(self):
-        pass
-
-    selected_cluster = Property(ClusterItemContext, get_selected_cluster, set_selected_cluster, notify=selected_cluster_changed)
 
     ####################
 
@@ -67,11 +66,11 @@ class ClustersContext(QObject):
         return join(str(Path.home()), '.kube')
 
     def load_clusters(self):
-        test = self.service.load()
+        test = self.metadata_service.load()
 
         items = [ClusterItemContext(item, self.config_service) for item in test]
-        
         self.item_service.refresh(items)
+
         self.clusters = ListModelContext(items, ClusterItemContext)
    
     @Slot()
@@ -83,22 +82,38 @@ class ClustersContext(QObject):
     def add_file(self, file_url):
         file_path = PathService.url_to_path(file_url)
 
-        self.config_service.add_file(file_path)
+        config_file = self.config_service.add_file(file_path)
         
-        item = self.service.read_from_file(file_path)
+        item = self.metadata_service.read_from_file(config_file)
 
         new_cluster = ClusterItemContext(item, self.config_service)
         self.clusters.append(new_cluster)
 
-        items = [item_context.cluster for item_context in self.clusters.items]
+        self.save_clusters()
 
-        self.service.save(items)
+
+    def save_clusters(self):
+        items = [item_context.cluster for item_context in self.clusters.items]
+        self.metadata_service.save(items)
 
     @Slot(int)
     def selected_index(self, index):
+        if (index >= len(self.clusters.items)):
+            self.selected_cluster = None
+            return
+
         cluster = self.clusters.items[index]
         self.selected_cluster = cluster
 
     @Slot(ClusterItemContext)
     def delete(self, cluster):
-        print(f"delete cluster: {cluster.name}")        
+        self.config_service.delete(cluster.file_name)
+        self.clusters.remove(cluster)
+        self.save_clusters()
+
+    
+    @Slot(ClusterItemContext)
+    def update(self, cluster):
+        self.clusters.update(cluster)
+        self.save_clusters()
+

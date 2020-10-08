@@ -1,4 +1,4 @@
-from os import path, makedirs
+from os import path, makedirs, remove
 import json
 import yaml
 import urllib
@@ -8,6 +8,8 @@ import filecmp
 from models.Cluster import Cluster
 
 from shutil import copyfile
+
+from .PathService import PathService
 
 class ClusterConfigService:
     _config_directory = "configs"
@@ -28,8 +30,12 @@ class ClusterConfigService:
             makedirs(self.base_directory)
         
         file_name = path.basename(file_path)
+        available_name = PathService.find_available_name(self.base_directory, file_name)
+        target_path = self.get_base_file(available_name)
 
-        copyfile(file_path, self.get_base_file(file_name))
+        copyfile(file_path, target_path)
+
+        return target_path
 
     def apply(self, file_name):
 
@@ -54,4 +60,12 @@ class ClusterConfigService:
         source_file_path = self.get_base_file(file_name)
 
         return path.exists(source_file_path)
+
+    def delete(self, file_name):
+        source_file_path = self.get_base_file(file_name)
+        
+        if(not path.exists(source_file_path)):
+            return
+
+        remove(source_file_path)
 

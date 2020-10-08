@@ -8,6 +8,7 @@ Item {
     id: root
     property var model
     signal deleted(var cluster)
+    signal dataChanged(var cluster)
 
     visible: model
 
@@ -50,7 +51,10 @@ Item {
                     Layout.alignment: Qt.AlignVCenter
                     Layout.fillWidth: true
                     text: root.model.display_name
-                    onTextChanged : root.model.display_name = text
+                    onTextChanged: {
+                        root.model.display_name = text
+                        root.dataChanged(root.model)
+                    }
                 }
 
                 Label { 
@@ -103,6 +107,8 @@ Item {
                 CheckBox {
                     id: hasPasswordCheckBox
                     anchors.leftMargin: 0
+                    checked: root.model.has_password
+                    enabled : false
                 }
             }
         }

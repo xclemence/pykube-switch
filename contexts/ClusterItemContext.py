@@ -13,6 +13,7 @@ class ClusterItemContext(QObject):
     server_changed = Signal()
     is_current_changed = Signal()
     has_file_changed = Signal()
+    has_password_changed = Signal()
 
     _is_current = False
     _has_file = True
@@ -49,6 +50,11 @@ class ClusterItemContext(QObject):
     @Property(str, notify=server_changed)
     def server(self):
         return self.cluster.server
+
+    ##############################
+    @Property(bool, notify=has_password_changed)
+    def has_password(self):
+        return self.cluster.password != ''
 
     ##############################
     @Property(bool, notify=is_current_changed)

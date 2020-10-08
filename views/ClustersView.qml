@@ -1,6 +1,6 @@
-import QtQuick 2.0
+import QtQuick 2.14
 import QtQuick.Layouts 1.11
-import QtQuick.Controls 2.1
+import QtQuick.Controls 2.14
 import QtQuick.Dialogs 1.0
 
 import "./controls"
@@ -40,6 +40,9 @@ Item {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                     clip: true
+                    ScrollBar.vertical: ScrollBar {
+                        policy: ScrollBar.AsNeeded
+                    }
 
                     model: root.model.clusters
 
@@ -84,6 +87,7 @@ Item {
                 anchors.fill: parent;
                 model: root.model.selected_cluster
                 onDeleted: root.model.delete(cluster)
+                onDataChanged: root.model.update(cluster)
             }
         }
     }

@@ -1,5 +1,7 @@
 from PySide2.QtCore import QObject, Slot, Property, Signal, QModelIndex
 
+import sys
+
 from PySide2.QtWidgets import QFileDialog
 from pathlib import Path
 from os.path import join
@@ -8,6 +10,7 @@ from services.ClusterMetaDataService import ClusterMetaDataService
 from services.ClusterConfigService import ClusterConfigService
 from services.ClusterItemService import ClusterItemService
 from services.PathService import PathService
+from services.ErrorService import ErrorService
 
 from .ClusterItemContext import ClusterItemContext
 from .ListModelContext import ListModelContext
@@ -67,33 +70,37 @@ class ClustersContext(QObject):
 
 
     def load_clusters(self):
-        test = self.metadata_service.load()
+        try:
+            cluster_models = self.metadata_service.load()
 
-        items = [ClusterItemContext(item, self.config_service) for item in test]
-        self.item_service.refresh(items)
+            items = [ClusterItemContext(item, self.config_service) for item in cluster_models]
+            self.item_service.refresh(items)
 
-        self.clusters = ListModelContext(items, ClusterItemContext)
-
+            self.clusters = ListModelContext(items, ClusterItemContext)
+        except: 
+            ErrorService().send_error(f'Error during configurations loading')
 
     @Slot()
     def refresh(self):
         self.load_clusters()
-    
 
     @Slot(str)
     def add_file(self, file_url):
-        file_path = PathService.url_to_path(file_url)
+        try:
+            file_path = PathService.url_to_path(file_url)
 
-        config_file = self.config_service.add_file(file_path)
+            config_file = self.config_service.add_file(file_path)
         
-        item = self.metadata_service.read_from_file(config_file)
+            item = self.metadata_service.read_from_file(config_file)
 
-        new_cluster = ClusterItemContext(item, self.config_service)
-        self.clusters.append(new_cluster)
+            new_cluster = ClusterItemContext(item, self.config_service)
+            self.clusters.append(new_cluster)
 
-        self.item_service.refresh(self.clusters)
+            self.item_service.refresh(self.clusters)
 
-        self.save_clusters()
+            self.save_clusters()
+        except:
+            ErrorService().send_error(f'Error during file "{file_path}" import')
 
 
     def save_clusters(self):
@@ -113,9 +120,12 @@ class ClustersContext(QObject):
 
     @Slot(ClusterItemContext)
     def delete(self, cluster):
-        self.config_service.delete(cluster.file_name)
-        self.clusters.remove(cluster)
-        self.save_clusters()
+        try:
+            self.config_service.delete(cluster.file_name)
+            self.clusters.remove(cluster)
+            self.save_clusters()
+        except:
+            ErrorService().send_error(f'Error during "{cluster}" deletion')
 
     
     @Slot(ClusterItemContext)
@@ -126,6 +136,9 @@ class ClustersContext(QObject):
 
     @Slot(str)
     def apply(self, file):
-        self.config_service.apply(file)
-        self.item_service.refresh_is_current(self.clusters.items)
-        self.clusters.update_all()
+        try:
+            self.config_service.apply(file)
+            self.item_service.refresh_is_current(self.clusters.items)
+            self.clusters.update_all()
+        except:
+            ErrorService().send_error(f'Error during configuration switch ({file})')

@@ -1,9 +1,11 @@
 import QtQuick 2.14
 import QtQuick.Layouts 1.11
 import QtQuick.Controls 2.14
-import QtQuick.Dialogs 1.0
+import QtQuick.Window 2.15
+
+// Be careful of order for filedialog
 import Qt.labs.platform 1.1
-import QtQuick.Window 2.1
+import QtQuick.Dialogs 1.3
 
 import "./controls"
 
@@ -22,8 +24,9 @@ Item {
     FileDialog {
         id: fileDialog
         title: "Please choose a file"
-        folder: shortcuts.home
         nameFilters: [ "All files (*)" ]
+        folder: shortcuts.home
+        visible: false
         onAccepted: model.add_file(fileDialog.fileUrl)
     }
 

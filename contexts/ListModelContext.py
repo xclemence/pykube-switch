@@ -1,5 +1,6 @@
-from PySide2.QtCore import QAbstractListModel, QModelIndex, Property
 import inspect
+
+from PySide2.QtCore import QAbstractListModel, QModelIndex, Property
 
 class ListModelContext(QAbstractListModel):
     def __init__(self, items, type, parent=None):

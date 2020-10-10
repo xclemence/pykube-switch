@@ -29,7 +29,7 @@ Item {
 
     signal clicked()
 
-    function open(text, buttonText) {
+    function open(text, buttonText = "") {
         snackText.text = text;
         snackButton.text = buttonText;
         snackButton.visible = buttonText !== "";
@@ -64,7 +64,7 @@ Item {
         x: snackBar.fullWidth ? 0 : (snackBar.parent.width - width) / 2
         y: snackBar.parent.height - offset
 
-        width: snackBar.fullWidth ? snackBar.parent.width : snackLayout.implicitWidth
+        width: snackBar.fullWidth ? snackBar.parent.width : snackLayout.Width
         height: snackLayout.implicitHeight
 
         enter: Transition {
@@ -101,7 +101,7 @@ Item {
                 spacing: 0
 
                 Item {
-                    width: 24
+                    Layout.preferredWidth: 24
                 }
 
                 Label {
@@ -133,7 +133,7 @@ Item {
                 }
 
                 Item {
-                    width: 24
+                    Layout.preferredWidth: 24
                 }
             }
         }

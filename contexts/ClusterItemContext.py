@@ -1,7 +1,4 @@
 from PySide2.QtCore import QObject, Slot, Property, Signal
-from services.ClusterConfigService import ClusterConfigService
-
-from models.Cluster import Cluster
 
 import pyperclip
 
@@ -16,13 +13,11 @@ class ClusterItemContext(QObject):
     has_password_changed = Signal()
     password_changed = Signal()
 
-    _is_current = False
-    _has_file = True
-
-    def __init__(self, cluster, configService):
+    def __init__(self, cluster):
         QObject.__init__(self)
         self.cluster = cluster
-        self.configService = configService
+        self._has_file = True
+        self._is_current = False
 
     ##############################
     @Property(str, notify=display_name_changed)

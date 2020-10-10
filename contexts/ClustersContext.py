@@ -1,11 +1,5 @@
 from PySide2.QtCore import QObject, Slot, Property, Signal, QModelIndex
 
-import sys
-
-from PySide2.QtWidgets import QFileDialog
-from pathlib import Path
-from os.path import join
-
 from services.ClusterMetaDataService import ClusterMetaDataService
 from services.ClusterConfigService import ClusterConfigService
 from services.ClusterItemService import ClusterItemService
@@ -14,7 +8,6 @@ from services.ErrorService import ErrorService
 
 from .ClusterItemContext import ClusterItemContext
 from .ListModelContext import ListModelContext
-from models.Cluster import Cluster
 
 class ClustersContext(QObject):
 
@@ -26,8 +19,8 @@ class ClustersContext(QObject):
 
     def __init__(self):
         QObject.__init__(self)
-        self.metadata_service = ClusterMetaDataService(self.get_working_directory())
-        self.config_service = ClusterConfigService(self.get_working_directory(), self.get_kube_directory())
+        self.metadata_service = ClusterMetaDataService(PathService.get_working_directory())
+        self.config_service = ClusterConfigService(PathService.get_working_directory(), PathService.get_kube_directory())
         self.item_service = ClusterItemService(self.config_service, self.metadata_service)
         self.load_clusters()
 
@@ -60,24 +53,18 @@ class ClustersContext(QObject):
         self.selected_cluster_changed.emit()
 
     ####################
-    
-    def get_working_directory(self):
-        return join(str(Path.home()), '.pykubeswitch')
-
-
-    def get_kube_directory(self):
-        return join(str(Path.home()), '.kube')
 
 
     def load_clusters(self):
         try:
             cluster_models = self.metadata_service.load()
 
-            items = [ClusterItemContext(item, self.config_service) for item in cluster_models]
+            items = [ClusterItemContext(item) for item in cluster_models]
             self.item_service.refresh(items)
 
             self.clusters = ListModelContext(items, ClusterItemContext)
-        except: 
+        except Exception as e:
+            print(e) 
             ErrorService().send_error(f'Error during configurations loading')
 
     @Slot()
@@ -89,17 +76,14 @@ class ClustersContext(QObject):
         try:
             file_path = PathService.url_to_path(file_url)
 
-            config_file = self.config_service.add_file(file_path)
-        
-            item = self.metadata_service.read_from_file(config_file)
+            new_cluster = self.item_service.create(file_path)
 
-            new_cluster = ClusterItemContext(item, self.config_service)
             self.clusters.append(new_cluster)
-
-            self.item_service.refresh(self.clusters)
+            self.item_service.refresh(self.clusters.items)
 
             self.save_clusters()
-        except:
+        except Exception as e:
+            print(e)
             ErrorService().send_error(f'Error during file "{file_path}" import')
 
 

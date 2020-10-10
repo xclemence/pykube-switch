@@ -1,8 +1,10 @@
 import platform 
 
+from pathlib import Path
 from os import path
-from models.Cluster import Cluster
 from urllib.parse import unquote, urlparse
+
+from models.Cluster import Cluster
 
 class PathService:
 
@@ -24,3 +26,11 @@ class PathService:
             index += 1
             
         return available_name
+
+    @classmethod
+    def get_working_directory(self):
+        return path.join(str(Path.home()), '.pykubeswitch')
+
+    @classmethod
+    def get_kube_directory(self):
+        return path.join(str(Path.home()), '.kube')

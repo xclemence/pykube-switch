@@ -20,5 +20,3 @@ class MainContext(QObject):
     @Property(ClustersContext, notify=cluster_context_changed)
     def clusters_context(self):
         return self._clusters_context
-
-    

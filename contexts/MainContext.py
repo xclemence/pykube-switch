@@ -4,14 +4,13 @@ from .ClustersContext import ClustersContext
 
 class MainContext(QObject):
 
-    _title = "Pykube Switch"
-    _clusters_context = ClustersContext()
-    
     cluster_context_changed = Signal()
     title_changed = Signal()
 
     def __init__(self):
         QObject.__init__(self)
+        self._title = "Pykube Switch"
+        self._clusters_context = ClustersContext()
 
     @Property(str, notify=title_changed)
     def title(self):

@@ -11,14 +11,14 @@ from .ListModelContext import ListModelContext
 
 class ClustersContext(QObject):
 
-    _clusters = ListModelContext([], ClusterItemContext) 
-    _selected_cluster: ClusterItemContext = None
-
     clusters_changed = Signal()
     selected_cluster_changed = Signal()
 
     def __init__(self):
         QObject.__init__(self)
+        self._clusters = ListModelContext([], ClusterItemContext) 
+        self._selected_cluster = None
+
         self.metadata_service = ClusterMetaDataService(PathService.get_working_directory())
         self.config_service = ClusterConfigService(PathService.get_working_directory(), PathService.get_kube_directory())
         self.item_service = ClusterItemService(self.config_service, self.metadata_service)

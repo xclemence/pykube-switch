@@ -1,13 +1,14 @@
-from os import path, makedirs, remove
 import json
 import yaml
 import urllib
 import urllib.request
 import filecmp 
 
-from models.Cluster import Cluster
 
 from shutil import copyfile
+from os import path, makedirs, remove
+
+from models.Cluster import Cluster
 
 from .PathService import PathService
 

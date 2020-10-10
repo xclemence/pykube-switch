@@ -3,8 +3,7 @@ import QtQuick.Layouts 1.11
 import QtQuick.Controls 2.14
 import QtQuick.Window 2.15
 
-// Be careful of order for filedialog
-import Qt.labs.platform 1.1
+import Qt.labs.platform 1.1 as LabsPlatform
 import QtQuick.Dialogs 1.3
 
 import "./controls"
@@ -55,9 +54,12 @@ Item {
                     onCurrentItemChanged: root.model.selected_index(listView.currentIndex)
                     
                     delegate: ItemDelegate {
+                        id: item
                         width: parent.width
-                        text: model.display_name + (model.is_current ? " (current)" : "")
                         highlighted: ListView.isCurrentItem
+                        contentItem: ClusterName {
+                            item: model
+                        }
                         onClicked: {
                             if (listView.currentIndex != index) {
                                 listView.currentIndex = index
@@ -98,18 +100,18 @@ Item {
         }
     }
 
-    SystemTrayIcon {
+    LabsPlatform.SystemTrayIcon {
         visible: true
         icon.source: "images/Kube.png"
 
-        menu: Menu {
-            Menu {
+        menu: LabsPlatform.Menu {
+            LabsPlatform.Menu {
                 title: "Contexts"
                 id: contextMenu
 
                 Instantiator {
                     model: root.model.clusters
-                    MenuItem {
+                    LabsPlatform.MenuItem {
                         text: model.display_name
                         checked : model.is_current
                         enabled: model.has_file
@@ -123,8 +125,8 @@ Item {
 
             }
  
-            MenuItem { separator : true }
-            MenuItem {
+            LabsPlatform.MenuItem { separator : true }
+            LabsPlatform.MenuItem {
                 text: qsTr("Restore")
                 onTriggered: {
                     window.visibility = Window.AutomaticVisibility
@@ -132,8 +134,8 @@ Item {
                 }
             }
             
-            MenuItem { separator : true }
-            MenuItem {
+            LabsPlatform.MenuItem { separator : true }
+            LabsPlatform.MenuItem {
                 icon.source: "images/Kube.png"
 
                 text: qsTr("Quit")

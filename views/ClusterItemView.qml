@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.11
 import QtQuick.Controls 2.1
 
 import "./controls"
+import "../MaterialIcons/MaterialDesign.js" as MD
 
 Item {
     id: root
@@ -30,9 +31,37 @@ Item {
             onPasswordChanged: root.dataChanged(root.model)
         }
 
+        RowLayout {
+            Layout.topMargin: 10
+            Layout.bottomMargin: 10
+
+            Label {
+                text: root.model ? root.model.name : ''
+	            font.pixelSize: 25
+            }
+
+            Circle {
+                Layout.leftMargin: 15
+                Layout.alignment: Qt.AlignVCenter
+                visible: root.model.is_current
+                color: "green"
+                size: 20
+            }
+
+            Label {
+                Layout.leftMargin: 15
+                Layout.alignment: Qt.AlignVCenter
+                visible: root.model.has_password
+                font.family: iconFont.name
+	            font.pixelSize: 20
+	            text: MD.icons.lock_outline
+            }
+        }
+
         Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
+            Layout.bottomMargin: 50
 
             GridLayout {
                 anchors.fill: parent
@@ -40,18 +69,17 @@ Item {
                 id: grid
                 columns: 2
 
-           
                 Label { 
                     Layout.alignment: Qt.AlignVCenter
-                    Layout.fillWidth: true
-                    text: "Display name:" 
+                    Layout.rightMargin: 30
+                    text: "Short name:" 
                 }
 
                 TextField {
                     id: displayNameInput
-                    selectByMouse: true
                     Layout.alignment: Qt.AlignVCenter
                     Layout.fillWidth: true
+                    selectByMouse: true
                     text: root.model.display_name
                     onEditingFinished: {
                         root.model.display_name = text
@@ -59,58 +87,31 @@ Item {
                     }
                 }
 
-                Label { 
-                    Layout.alignment: Qt.AlignVCenter
-                    Layout.fillWidth: true
-                    id: nameLabel 
-                    text: "Name:" 
-                }
-
                 Label {
                     Layout.alignment: Qt.AlignVCenter
-                    text: root.model ? root.model.name : ''
-                }
-
-                Label {
-                    Layout.alignment: Qt.AlignVCenter
-                    Layout.fillWidth: true
-
                     id: serverLabel
                     text: "Server:"
                 }
 
-                Label {
+                TextField {
                     Layout.alignment: Qt.AlignVCenter
                     Layout.fillWidth: true
-
-                    id: serverText
+                    readOnly: true
+                    selectByMouse: true
                     text: root.model ? root.model.server : ''
                 }
 
                 Label {
                     Layout.alignment: Qt.AlignVCenter
-                    Layout.fillWidth: true
                     text: "File:"
                 }
 
-                Label {
+                TextField {
                     Layout.alignment: Qt.AlignVCenter
                     Layout.fillWidth: true
+                    readOnly: true
+                    selectByMouse: true
                     text: root.model ? root.model.file_name : ''
-                }
-
-                Label {
-                    Layout.alignment: Qt.AlignVCenter
-                    Layout.fillWidth: true
-                    id: hasPasswordLabel
-                    text: "has password:"
-                }
-
-                CheckBox {
-                    id: hasPasswordCheckBox
-                    anchors.leftMargin: 0
-                    checked: root.model.has_password
-                    enabled : false
                 }
             }
         }

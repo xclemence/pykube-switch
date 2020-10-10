@@ -117,4 +117,3 @@ Item {
         onMouseYChanged: bottomResize(mouseY, root.previousY)
     }
 }
-

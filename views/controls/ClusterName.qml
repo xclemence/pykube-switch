@@ -13,13 +13,11 @@ Item {
             text: root.item.display_name
         }
 
-        Rectangle {
+        Circle {
             visible: root.item.is_current
             Layout.alignment: Qt.AlignRight
-            width: 15
-            height: 15
-            color: "red"
-            radius: width * 0.5
-         }
+            color: "green"
+            size: 15
+        }
     }
 }

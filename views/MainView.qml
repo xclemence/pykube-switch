@@ -17,6 +17,11 @@ ApplicationWindow {
     Material.accent: Material.Green
     title: context.title
 
+    FontLoader {
+    	id: iconFont
+        source: "../MaterialIcons/MaterialIcons-Regular.ttf"
+    }
+
     header: Rectangle {
         width: parent.width;
         height: 30;

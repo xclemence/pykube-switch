@@ -13,13 +13,6 @@ Item {
     property var model
     property ApplicationWindow window
 
-    Component {
-        id: clusterItemTemplate
-        Label {
-            text: index
-        }
-    }
-
     FileDialog {
         id: fileDialog
         title: "Please choose a file"
@@ -29,8 +22,9 @@ Item {
         onAccepted: model.add_file(fileDialog.fileUrl)
     }
 
-    RowLayout {
+    SplitView {
         anchors.fill: parent;
+        orientation: Qt.Horizontal
 
         GroupBox {
             Layout.fillHeight: true
@@ -92,6 +86,10 @@ Item {
             title: qsTr("Cluster details")
             ClusterItemView {
                 anchors.fill: parent;
+                anchors.leftMargin: 10
+                anchors.rightMargin: 10
+                anchors.bottomMargin: 10
+
                 model: root.model.selected_cluster
                 onDeleted: root.model.delete(cluster)
                 onApplied: root.model.apply(cluster.file_name)

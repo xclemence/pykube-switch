@@ -1,5 +1,5 @@
 import QtQuick 2.15
-import QtQuick.Layouts 1.11
+import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
 Item {
@@ -56,7 +56,7 @@ Item {
             Button {
                 id: copyPasswordButton
                 enabled: model.has_password
-                text: "Copy password to clipboard"
+                text: "Copy password"
                 font.capitalization: Font.MixedCase 
                 onClicked: root.copyPasswordClicked()
             }

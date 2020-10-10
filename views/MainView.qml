@@ -1,7 +1,7 @@
 import QtQuick 2.15
-import QtQuick.Layouts 1.11
-import QtQuick.Window 2.1
-import QtQuick.Controls.Material 2.1
+import QtQuick.Layouts 1.15
+import QtQuick.Window 2.15
+import QtQuick.Controls.Material 2.12
 import QtQuick.Controls 2.15
 import QtQuick.Dialogs 1.3
 
@@ -47,9 +47,13 @@ ApplicationWindow {
             Layout.fillWidth: true
             Layout.fillHeight: true
             model: context.clusters_context
-            window: mainWindow
         }
 
+    }
+
+    TrayIconView {
+        model: context.clusters_context
+        window: mainWindow
     }
 
     ResizeArea {

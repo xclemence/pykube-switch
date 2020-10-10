@@ -1,9 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.11
-import QtQuick.Controls 2.14
-import QtQuick.Window 2.15
-
-import Qt.labs.platform 1.1 as LabsPlatform
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 import QtQuick.Dialogs 1.3
 
 import "./controls"
@@ -11,7 +8,6 @@ import "./controls"
 Item {
     id: root
     property var model
-    property ApplicationWindow window
 
     FileDialog {
         id: fileDialog
@@ -27,9 +23,9 @@ Item {
         orientation: Qt.Horizontal
 
         GroupBox {
-            Layout.fillHeight: true
-            Layout.preferredWidth: 250
-            title: qsTr("Cluster contexts")
+            SplitView.fillHeight: true
+            SplitView.minimumWidth: 220
+            title: "Cluster contexts"
 
             ColumnLayout {
                 anchors.fill: parent;
@@ -80,10 +76,11 @@ Item {
         }
 
         GroupBox {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
+            SplitView.fillWidth: true
+            SplitView.fillHeight: true
+            SplitView.minimumWidth: 450
 
-            title: qsTr("Cluster details")
+            title: "Cluster details"
             ClusterItemView {
                 anchors.fill: parent;
                 anchors.leftMargin: 10
@@ -94,50 +91,6 @@ Item {
                 onDeleted: root.model.delete(cluster)
                 onApplied: root.model.apply(cluster.file_name)
                 onDataChanged: root.model.update(cluster)
-            }
-        }
-    }
-
-    LabsPlatform.SystemTrayIcon {
-        visible: true
-        icon.source: "images/Kube.png"
-
-        menu: LabsPlatform.Menu {
-            LabsPlatform.Menu {
-                title: "Contexts"
-                id: contextMenu
-
-                Instantiator {
-                    model: root.model.clusters
-                    LabsPlatform.MenuItem {
-                        text: model.display_name
-                        checked : model.is_current
-                        enabled: model.has_file
-                        onTriggered: root.model.apply(model.file_name)
-                    }
-
-                    // The trick is on those two lines
-                    onObjectAdded: contextMenu.insertItem(index, object)
-                    onObjectRemoved: contextMenu.removeItem(object)
-                }
-
-            }
- 
-            LabsPlatform.MenuItem { separator : true }
-            LabsPlatform.MenuItem {
-                text: qsTr("Restore")
-                onTriggered: {
-                    window.visibility = Window.AutomaticVisibility
-                    window.visible = true
-                }
-            }
-            
-            LabsPlatform.MenuItem { separator : true }
-            LabsPlatform.MenuItem {
-                icon.source: "images/Kube.png"
-
-                text: qsTr("Quit")
-                onTriggered: Qt.quit()
             }
         }
     }

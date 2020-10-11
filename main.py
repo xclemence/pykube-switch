@@ -1,14 +1,21 @@
 import sys
 import os
+import multiprocessing
 
 from os.path import abspath, dirname, join
 from PySide2.QtGui import QGuiApplication
 from PySide2.QtQml import QQmlApplicationEngine
 from PySide2.QtQuickControls2 import QQuickStyle
-
+from PySide2.QtCore import QUrl
 
 from contexts.MainContext import MainContext
 from services.ErrorService import ErrorService
+
+application_path = (
+    sys._MEIPASS
+    if getattr(sys, "frozen", False)
+    else dirname(abspath(__file__))
+)
 
 def shutdown():
     del globals()["engine"]
@@ -32,8 +39,8 @@ if __name__ == '__main__':
     context.setContextProperty("context", main_context)
     context.setContextProperty("error", error_service)
 
-    qmlFile = join(dirname(__file__), 'views/MainView.qml')
-    engine.load(abspath(qmlFile))
+    qmlFile = join(application_path, "views/MainView.qml")
+    engine.load(QUrl.fromLocalFile(qmlFile))
 
     if not engine.rootObjects():
         sys.exit(-1)

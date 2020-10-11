@@ -11,7 +11,7 @@ Item {
     
     LabsPlatform.SystemTrayIcon {
         visible: true
-        icon.source: "images/Kube.png"
+        icon.source: "Images/pykube.png"
 
         menu: LabsPlatform.Menu {
             LabsPlatform.Menu {
@@ -36,7 +36,7 @@ Item {
  
             LabsPlatform.MenuItem { separator : true }
             LabsPlatform.MenuItem {
-                text: qsTr("Restore")
+                text: "Restore"
                 onTriggered: {
                     window.visibility = Window.AutomaticVisibility
                     window.visible = true
@@ -45,9 +45,7 @@ Item {
             
             LabsPlatform.MenuItem { separator : true }
             LabsPlatform.MenuItem {
-                icon.source: "images/Kube.png"
-
-                text: qsTr("Quit")
+                text: "Quit"
                 onTriggered: Qt.quit()
             }
         }

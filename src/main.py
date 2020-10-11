@@ -6,8 +6,8 @@ from PySide2.QtQml import QQmlApplicationEngine
 from PySide2.QtQuickControls2 import QQuickStyle
 from PySide2.QtCore import QUrl
 
-from contexts.MainContext import MainContext
-from services.ErrorService import ErrorService
+from Contexts.MainContext import MainContext
+from Services.ErrorService import ErrorService
 
 application_path = (
     sys._MEIPASS

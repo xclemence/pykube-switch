@@ -4,8 +4,7 @@ import yaml
 import urllib
 import urllib.request
 
-from models.Cluster import Cluster
-
+from DataModels.Cluster import Cluster
 
 class ClusterMetaDataService:
     _meta_data_file_name = "clusters.json"
@@ -17,7 +16,8 @@ class ClusterMetaDataService:
         return path.join(self.base_directory, self._meta_data_file_name)
 
     def save(self, clusters):
-        makedirs(self.base_directory)
+        if not path.exists(self.base_directory):
+            makedirs(self.base_directory)
 
         file_full_path = self.get_file_path()
 

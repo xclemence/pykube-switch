@@ -1,4 +1,5 @@
-class Cluster:
+
+class Cluster(object):
     display_name = ""
     name = ""
     password = ""
@@ -11,3 +12,4 @@ class Cluster:
         self.file_name = file_name
         self.password = password
         self.server = server
+

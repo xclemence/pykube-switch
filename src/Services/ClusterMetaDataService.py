@@ -16,7 +16,8 @@ class ClusterMetaDataService:
         return path.join(self.base_directory, self._meta_data_file_name)
 
     def save(self, clusters):
-        makedirs(self.base_directory)
+        if not path.exists(self.base_directory):
+            makedirs(self.base_directory)
 
         file_full_path = self.get_file_path()
 

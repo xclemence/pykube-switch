@@ -25,7 +25,7 @@ Item {
         RowLayout {
             width: parent.width;
             Image {
-                source: "Images/Kube.png"
+                source: "Images/pykube.png"
                 Layout.leftMargin: 10;
                 Layout.preferredWidth: 20;
                 Layout.preferredHeight: 20;

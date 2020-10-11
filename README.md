@@ -2,6 +2,7 @@
 
 This tool help to managed multiple Kubernetes contexts (like kubectl), you can register contexts and switch easily between them.
 
+<img src="doc/images/pykube.png"/>
 
 ## Technical aspects
 

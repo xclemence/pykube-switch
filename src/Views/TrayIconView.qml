@@ -11,7 +11,7 @@ Item {
     
     LabsPlatform.SystemTrayIcon {
         visible: true
-        icon.source: "Images/Kube.png"
+        icon.source: "Images/pykube.png"
 
         menu: LabsPlatform.Menu {
             LabsPlatform.Menu {

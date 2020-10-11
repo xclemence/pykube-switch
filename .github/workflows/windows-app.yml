@@ -24,9 +24,13 @@ jobs:
 
     - name: Create package
       run: |
-        pyinstaller --noconfirm --onedir --name "pykube-switch" --debug "all" --add-data "./views;views/" --add-data "./MaterialIcons;MaterialIcons/" --hidden-import "PySide2.QtQuick" --hidden-import "models" "./main.py"
+        pyinstaller --noconfirm --onedir --name "pykube-switch" --add-data "./views;views/" --add-data "./MaterialIcons;MaterialIcons/" --hidden-import "PySide2.QtQuick" "./main.py"
+      working-directory: src
+
 
     - uses: actions/upload-artifact@v2
       with:
         name: pykube-switch
         path: dist/pykube-switch
+      working-directory: src
+     

@@ -2,7 +2,7 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
-import "./controls"
+import "./Controls"
 
 Item {
     id: root
@@ -25,7 +25,7 @@ Item {
         RowLayout {
             width: parent.width;
             Image {
-                source: "images/Kube.png"
+                source: "Images/Kube.png"
                 Layout.leftMargin: 10;
                 Layout.preferredWidth: 20;
                 Layout.preferredHeight: 20;

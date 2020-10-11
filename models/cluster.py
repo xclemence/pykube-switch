@@ -1,6 +1,6 @@
 class Cluster:
     display_name = ""
-    name =  ""
+    name = ""
     password = ""
     file_name = ""
     server = ""
@@ -11,4 +11,3 @@ class Cluster:
         self.file_name = file_name
         self.password = password
         self.server = server
-

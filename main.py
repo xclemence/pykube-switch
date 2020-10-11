@@ -1,6 +1,4 @@
 import sys
-import os
-import multiprocessing
 
 from os.path import abspath, dirname, join
 from PySide2.QtGui import QGuiApplication
@@ -20,17 +18,17 @@ application_path = (
 def shutdown():
     del globals()["engine"]
 
-if __name__ == '__main__':
 
+if __name__ == '__main__':
     main_context = MainContext()
     error_service = ErrorService()
-    
+
     app = QGuiApplication(sys.argv)
     app.aboutToQuit.connect(shutdown)
-    
+
     app.setOrganizationName("xavier CLEMENCE")
     app.setOrganizationDomain("xavier CLEMENCE")
-    
+
     QQuickStyle.setStyle("Material")
     engine = QQmlApplicationEngine()
 

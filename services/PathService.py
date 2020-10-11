@@ -4,7 +4,6 @@ from pathlib import Path
 from os import path
 from urllib.parse import unquote, urlparse
 
-from models.Cluster import Cluster
 
 class PathService:
 
@@ -13,7 +12,7 @@ class PathService:
         url = file_url
         if platform.system() == "Windows": 
             url = file_url.replace("file:///", "file://")
-            
+
         return unquote(urlparse(url).path)
 
     @classmethod
@@ -24,13 +23,13 @@ class PathService:
         while path.exists(path.join(directory, available_name)):
             available_name = f"{file_name}_{index}"
             index += 1
-            
+
         return available_name
 
     @classmethod
-    def get_working_directory(self):
+    def get_working_directory(cls):
         return path.join(str(Path.home()), '.pykubeswitch')
 
     @classmethod
-    def get_kube_directory(self):
+    def get_kube_directory(cls):
         return path.join(str(Path.home()), '.kube')

@@ -1,4 +1,4 @@
-from PySide2.QtCore import QObject, Slot, Property, Signal, QModelIndex
+from PySide2.QtCore import QObject, Slot, Property, Signal
 
 from services.ClusterMetaDataService import ClusterMetaDataService
 from services.ClusterConfigService import ClusterConfigService
@@ -9,6 +9,7 @@ from services.ErrorService import ErrorService
 from .ClusterItemContext import ClusterItemContext
 from .ListModelContext import ListModelContext
 
+
 class ClustersContext(QObject):
 
     clusters_changed = Signal()
@@ -16,7 +17,7 @@ class ClustersContext(QObject):
 
     def __init__(self):
         QObject.__init__(self)
-        self._clusters = ListModelContext([], ClusterItemContext) 
+        self._clusters = ListModelContext([], ClusterItemContext)
         self._selected_cluster = None
 
         self.metadata_service = ClusterMetaDataService(PathService.get_working_directory())
@@ -54,7 +55,6 @@ class ClustersContext(QObject):
 
     ####################
 
-
     def load_clusters(self):
         try:
             cluster_models = self.metadata_service.load()
@@ -65,7 +65,7 @@ class ClustersContext(QObject):
             self.clusters = ListModelContext(items, ClusterItemContext)
         except Exception as e:
             print(e) 
-            ErrorService().send_error(f'Error during configurations loading')
+            ErrorService().send_error('Error during configurations loading')
 
     @Slot()
     def refresh(self):
@@ -86,11 +86,9 @@ class ClustersContext(QObject):
             print(e)
             ErrorService().send_error(f'Error during file "{file_path}" import')
 
-
     def save_clusters(self):
         items = [item_context.cluster for item_context in self.clusters.items]
         self.metadata_service.save(items)
-
 
     @Slot(int)
     def selected_index(self, index):
@@ -101,22 +99,20 @@ class ClustersContext(QObject):
         cluster = self.clusters.items[index]
         self.selected_cluster = cluster
 
-
     @Slot(ClusterItemContext)
     def delete(self, cluster):
         try:
             self.config_service.delete(cluster.file_name)
             self.clusters.remove(cluster)
             self.save_clusters()
-        except:
+        except Exception as e:
+            print(e)
             ErrorService().send_error(f'Error during "{cluster}" deletion')
 
-    
     @Slot(ClusterItemContext)
     def update(self, cluster):
         self.clusters.update(cluster)
         self.save_clusters()
-
 
     @Slot(str)
     def apply(self, file):
@@ -124,5 +120,6 @@ class ClustersContext(QObject):
             self.config_service.apply(file)
             self.item_service.refresh_is_current(self.clusters.items)
             self.clusters.update_all()
-        except:
+        except Exception as e:
+            print(e)
             ErrorService().send_error(f'Error during configuration switch ({file})')

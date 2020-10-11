@@ -10,7 +10,7 @@ class ListModelContext(QAbstractListModel):
         self.schema = self.get_schema()
 
     def get_schema(self):
-        return [name for name, val in inspect.getmembers(self.item_type, lambda o: isinstance(o, Property)) ]
+        return [name for name, val in inspect.getmembers(self.item_type, lambda o: isinstance(o, Property))]
 
     def append(self, item):
         self.beginInsertRows(QModelIndex(), self.rowCount(), self.rowCount())
@@ -49,5 +49,5 @@ class ListModelContext(QAbstractListModel):
         for field in self.get_schema():
             role_names[index] = field.encode()
             index += 1
-        
+    
         return role_names

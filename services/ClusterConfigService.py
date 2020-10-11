@@ -1,16 +1,11 @@
-import json
-import yaml
 import urllib
-import urllib.request
-import filecmp 
-
+import filecmp
 
 from shutil import copyfile
 from os import path, makedirs, remove
 
-from models.Cluster import Cluster
-
 from .PathService import PathService
+
 
 class ClusterConfigService:
     _config_directory = "configs"
@@ -22,14 +17,14 @@ class ClusterConfigService:
 
     def get_base_file(self, file_name):
         return path.join(self.base_directory, file_name)
-    
+
     def get_target_file(self):
         return path.join(self.target_directory, self._target_file_name)
 
     def add_file(self, file_path):
         if not path.exists(self.base_directory):
             makedirs(self.base_directory)
-        
+
         file_name = path.basename(file_path)
         available_name = PathService.find_available_name(self.base_directory, file_name)
         target_path = self.get_base_file(available_name)
@@ -44,7 +39,7 @@ class ClusterConfigService:
         target_file_path = self.get_target_file()
 
         if(not path.exists(source_file_path)):
-           return 
+            return 
 
         copyfile(source_file_path, target_file_path)
 
@@ -53,7 +48,7 @@ class ClusterConfigService:
         target_file_path = self.get_target_file()
 
         if(not path.exists(source_file_path) or not path.exists(target_file_path)):
-           return False
+            return False
 
         return filecmp.cmp(source_file_path, target_file_path, False) 
 
@@ -64,9 +59,8 @@ class ClusterConfigService:
 
     def delete(self, file_name):
         source_file_path = self.get_base_file(file_name)
-        
+
         if(not path.exists(source_file_path)):
             return
 
         remove(source_file_path)
-

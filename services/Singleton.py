@@ -1,5 +1,6 @@
 from PySide2.QtCore import QObject
 
+
 class Singleton(type):
     _instances = {}
 

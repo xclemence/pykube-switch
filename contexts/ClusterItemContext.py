@@ -2,6 +2,7 @@ from PySide2.QtCore import QObject, Slot, Property, Signal
 
 import pyperclip
 
+
 class ClusterItemContext(QObject):
 
     name_changed = Signal()
@@ -38,7 +39,7 @@ class ClusterItemContext(QObject):
         return self.cluster.password
 
     @password.setter
-    def set_display_name(self, value):
+    def set_password(self, value):
         if(self.cluster.password == value):
             return
 
@@ -91,4 +92,3 @@ class ClusterItemContext(QObject):
     @Slot()
     def copy_password_to_clipbord(self):
         pyperclip.copy(self.cluster.password)
-

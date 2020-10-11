@@ -1,6 +1,7 @@
-from PySide2.QtCore import QObject, Slot, Property, Signal
+from PySide2.QtCore import QObject, Property, Signal
 
 from .ClustersContext import ClustersContext
+
 
 class MainContext(QObject):
 

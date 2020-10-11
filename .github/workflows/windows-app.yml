@@ -31,6 +31,5 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: pykube-switch
-        path: dist/pykube-switch
-      working-directory: src
+        path: src/dist/pykube-switch
      

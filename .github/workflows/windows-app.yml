@@ -30,4 +30,7 @@ jobs:
       run: |
         pyinstaller --noconfirm --onedir --windowed --name "pykube-switch" --add-data "./views;views/" --add-data "./MaterialIcons;MaterialIcons/" --hidden-import "PySide2.QtQuick"  "./main.py"
 
-      
+    - uses: actions/upload-artifact@v2
+      with:
+        name: pykube-switch
+        path: build/pykube-switch

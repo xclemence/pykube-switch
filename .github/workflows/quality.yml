@@ -34,11 +34,12 @@ jobs:
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       working-directory: src
-      
 
-    # - name: Test with pytest
-    #   run: |
-    #     pytest
+
+    - name: Test with pytest
+      run: |
+        pytest --junitxml=pytest-report.xml
+
     - name: SonarCloud Scan
       uses: SonarSource/sonarcloud-github-action@v1.3
       env:

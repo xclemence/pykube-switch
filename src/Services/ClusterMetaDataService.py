@@ -27,7 +27,7 @@ class ClusterMetaDataService:
     def load(self):
         file_full_path = self.get_file_path()
 
-        if not path.exists(file_full_path):
+        if not path.isfile(file_full_path):
             return []
 
         with open(file_full_path, 'r') as file:
@@ -36,7 +36,6 @@ class ClusterMetaDataService:
         return list(map(lambda x: Cluster(**x), restults))
 
     def read_from_file(self, file_path):
-        
         with open(file_path, 'r') as file:
             yaml_content = yaml.safe_load(file)
 

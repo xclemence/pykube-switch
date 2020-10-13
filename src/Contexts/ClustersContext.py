@@ -3,7 +3,7 @@ from PySide2.QtCore import QObject, Slot, Property, Signal
 from Services.ClusterMetaDataService import ClusterMetaDataService
 from Services.ClusterConfigService import ClusterConfigService
 from Services.ClusterItemService import ClusterItemService
-from Services.PathService import PathService
+from Services.PathService import *
 from Services.ErrorService import ErrorService
 
 from .ClusterItemContext import ClusterItemContext
@@ -20,8 +20,8 @@ class ClustersContext(QObject):
         self._clusters = ListModelContext([], ClusterItemContext)
         self._selected_cluster = None
 
-        self.metadata_service = ClusterMetaDataService(PathService.get_working_directory())
-        self.config_service = ClusterConfigService(PathService.get_working_directory(), PathService.get_kube_directory())
+        self.metadata_service = ClusterMetaDataService(get_working_directory())
+        self.config_service = ClusterConfigService(get_working_directory(), get_kube_directory())
         self.item_service = ClusterItemService(self.config_service, self.metadata_service)
         self.load_clusters()
 
@@ -74,7 +74,7 @@ class ClustersContext(QObject):
     @Slot(str)
     def add_file(self, file_url):
         try:
-            file_path = PathService.url_to_path(file_url)
+            file_path = url_to_path(file_url)
 
             new_cluster = self.item_service.create(file_path)
 

@@ -1,7 +1,7 @@
 import sys
 
 from os.path import abspath, dirname, join
-from PySide2.QtGui import QGuiApplication
+from PySide2.QtGui import QGuiApplication, QIcon
 from PySide2.QtQml import QQmlApplicationEngine
 from PySide2.QtQuickControls2 import QQuickStyle
 from PySide2.QtCore import QUrl
@@ -25,6 +25,7 @@ if __name__ == '__main__':
 
     app = QGuiApplication(sys.argv)
     app.aboutToQuit.connect(shutdown)
+    app.setWindowIcon(QIcon("./pykube.ico"))
 
     app.setOrganizationName("xavier CLEMENCE")
     app.setOrganizationDomain("xavier CLEMENCE")

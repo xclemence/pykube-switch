@@ -1,0 +1,19 @@
+dictionaries:
+  - en
+  - en_GB
+
+# Any files/folders we should ignore?
+excluded_files:
+  - ".typo-ci.yml"
+  - ".gitignore"
+  - ".github/*"
+
+
+# Any typos we should ignore?
+excluded_words:
+  - pykubeswitch
+  - kube
+  - urlparse
+  
+# Would you like filenames to also be spellchecked?
+spellcheck_filenames: true

@@ -3,7 +3,7 @@ from PySide2.QtCore import QObject, Slot, Property, Signal
 from Services.ClusterMetaDataService import ClusterMetaDataService
 from Services.ClusterConfigService import ClusterConfigService
 from Services.ClusterItemService import ClusterItemService
-from Services.PathService import *
+from Services.PathService import get_working_directory, get_kube_directory
 from Services.ErrorService import ErrorService
 
 from .ClusterItemContext import ClusterItemContext

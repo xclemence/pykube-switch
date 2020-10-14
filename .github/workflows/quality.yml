@@ -40,7 +40,7 @@ jobs:
 
     - name: Test with pytest
       run: |
-        pytest --junitxml=pytest-report.xml
+        pytest --junitxml=pytest-report.xml --cov=src --cov-config=.coveragerc --cov-report xml
 
     - name: SonarCloud Scan
       uses: SonarSource/sonarcloud-github-action@v1.3

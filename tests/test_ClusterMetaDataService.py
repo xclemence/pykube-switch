@@ -1,4 +1,5 @@
 import pytest
+from pathlib import Path
 
 from Services.ClusterMetaDataService import ClusterMetaDataService
 
@@ -20,11 +21,11 @@ contexts:
 current-context: default
     """)
 
-    mocker.patch("Services.ClusterMetaDataService.open", mock_open)
+    mocker.patch.object(Path,"open", mock_open)
     
-    service = ClusterMetaDataService("./test")
+    service = ClusterMetaDataService(Path("./test"))
 
-    cluster = service.read_from_file("./test.file")
+    cluster = service.read_from_file(Path("./test.file"))
 
     assert cluster.name == "default"
     assert cluster.display_name == "default"
@@ -42,8 +43,8 @@ clusters:
   name: default
     """)
 
-    mocker.patch("Services.ClusterMetaDataService.open", mock_open)
+    mocker.patch.object(Path,"open", mock_open)
     
-    service = ClusterMetaDataService("./test")
+    service = ClusterMetaDataService(Path("./test"))
     with pytest.raises(Exception):
-        service.read_from_file("./test.file")
+        service.read_from_file(Path("./test.file"))

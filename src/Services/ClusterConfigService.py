@@ -1,31 +1,29 @@
-import urllib
 import filecmp
 
 from shutil import copyfile
-from os import path, makedirs, remove
+from pathlib import Path
 
 from .PathService import find_available_name
-
 
 class ClusterConfigService:
     _config_directory = "configs"
     _target_file_name = "config"
 
     def __init__(self, base_directory, target_directory):
-        self.base_directory = path.join(base_directory, self._config_directory)
+        self.base_directory = base_directory / self._config_directory
         self.target_directory = target_directory
 
     def get_base_file(self, file_name):
-        return path.join(self.base_directory, file_name)
+        return self.base_directory / file_name
 
     def get_target_file(self):
-        return path.join(self.target_directory, self._target_file_name)
+        return self.target_directory / self._target_file_name
 
     def add_file(self, file_path):
-        if not path.exists(self.base_directory):
-            makedirs(self.base_directory)
+        if not self.base_directory.is_dir():
+            self.base_directory.mkdir(parents=True)
 
-        file_name = path.basename(file_path)
+        file_name = file_path.name
         available_name = find_available_name(self.base_directory, file_name)
         target_path = self.get_base_file(available_name)
 
@@ -38,7 +36,7 @@ class ClusterConfigService:
         source_file_path = self.get_base_file(file_name)
         target_file_path = self.get_target_file()
 
-        if(not path.exists(source_file_path)):
+        if(not source_file_path.is_file()):
             return
 
         copyfile(source_file_path, target_file_path)
@@ -47,7 +45,7 @@ class ClusterConfigService:
         source_file_path = self.get_base_file(file_name)
         target_file_path = self.get_target_file()
 
-        if(not path.isfile(source_file_path) or not path.isfile(target_file_path)):
+        if(not source_file_path.is_file() or not target_file_path.is_file()):
             return False
 
         return filecmp.cmp(source_file_path, target_file_path, False)
@@ -55,12 +53,9 @@ class ClusterConfigService:
     def exists(self, file_name):
         source_file_path = self.get_base_file(file_name)
 
-        return path.exists(source_file_path)
+        return source_file_path.is_file()
 
     def delete(self, file_name):
         source_file_path = self.get_base_file(file_name)
 
-        if(not path.exists(source_file_path)):
-            return
-
-        remove(source_file_path)
+        source_file_path.unlink(True)

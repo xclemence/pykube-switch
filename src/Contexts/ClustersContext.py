@@ -3,7 +3,7 @@ from PySide2.QtCore import QObject, Slot, Property, Signal
 from Services.ClusterMetaDataService import ClusterMetaDataService
 from Services.ClusterConfigService import ClusterConfigService
 from Services.ClusterItemService import ClusterItemService
-from Services.PathService import *
+from Services.PathService import get_working_directory, get_kube_directory
 from Services.ErrorService import ErrorService
 
 from .ClusterItemContext import ClusterItemContext
@@ -74,9 +74,8 @@ class ClustersContext(QObject):
     @Slot(str)
     def add_file(self, file_url):
         try:
-            file_path = url_to_path(file_url)
-
-            new_cluster = self.item_service.create(file_path)
+            
+            new_cluster = self.item_service.create(file_url)
 
             self.clusters.append(new_cluster)
             self.item_service.refresh(self.clusters.items)
@@ -84,7 +83,7 @@ class ClustersContext(QObject):
             self.save_clusters()
         except Exception as e:
             print(e)
-            ErrorService().send_error(f'Error during file "{file_path}" import')
+            ErrorService().send_error(f'Error during file "{file_url}" import')
 
     def save_clusters(self):
         items = [item_context.cluster for item_context in self.clusters.items]

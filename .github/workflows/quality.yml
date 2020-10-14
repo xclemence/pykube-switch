@@ -3,11 +3,13 @@
 
 name: Quality
 
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+# on:
+#   push:
+#     branches: [ master ]
+#   pull_request:
+#     branches: [ master ]
+
+on: push
 
 jobs:
   build:
@@ -38,7 +40,12 @@ jobs:
 
     - name: Test with pytest
       run: |
-        pytest --junitxml=pytest-report.xml
+        pytest --junitxml=pytest-report.xml --cov=src --cov-config=.coveragerc --cov-report xml
+    
+    - name: fix code coverage paths
+      run: |
+        sed -i 's/\/home\/runner\/work\/pykube-switch\/pykube-switch\//\/github\/workspace\//g' coverage.xml
+      
 
     - name: SonarCloud Scan
       uses: SonarSource/sonarcloud-github-action@v1.3

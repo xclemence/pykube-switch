@@ -1,3 +1,3 @@
 [run]
-omit = tests/*
-source = src/*
+omit = ./tests/*
+source = ./src

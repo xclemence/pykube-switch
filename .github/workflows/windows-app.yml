@@ -28,7 +28,7 @@ jobs:
 
     - name: Create package
       run: |
-        pyinstaller --noconfirm --onedir --windowed --name "pykube-switch" --icon "./src/pykube.ico" --add-data "./Views;Views/" --add-data "./MaterialIcons;MaterialIcons/" --hidden-import "PySide2.QtQuick" "./main.py"
+        pyinstaller --noconfirm --onedir --windowed --name "pykube-switch" --icon "./pykube.ico" --add-data "./Views;Views/" --add-data "./MaterialIcons;MaterialIcons/" --hidden-import "PySide2.QtQuick" "./main.py"
       working-directory: src
 
 

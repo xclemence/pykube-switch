@@ -44,7 +44,7 @@ jobs:
     
     - name: fix code coverage paths
       run: |
-        sed -i 's/\/home\/runner\/work\/pykube-switch\/pykube-switch\//\/github\/workspace\//g' sonar-cloud-reporter.xml
+        sed -i 's/\/home\/runner\/work\/pykube-switch\/pykube-switch\//\/github\/workspace\//g' coverage.xml
       
 
     - name: SonarCloud Scan

@@ -25,7 +25,7 @@ if __name__ == '__main__':
 
     app = QGuiApplication(sys.argv)
     app.aboutToQuit.connect(shutdown)
-    app.setWindowIcon(QIcon("./pykube.ico"))
+    app.setWindowIcon(QIcon("icons/app.ico"))
 
     app.setOrganizationName("xavier CLEMENCE")
     app.setOrganizationDomain("xavier CLEMENCE")

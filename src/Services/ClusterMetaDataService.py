@@ -22,7 +22,7 @@ class ClusterMetaDataService:
         file_full_path = self.get_file_path()
 
         with file_full_path.open('w+') as outfile:
-            json.dump(clusters, outfile, default = lambda o: o.__dict__, indent = 2)
+            json.dump(clusters, outfile, default=lambda o: o.__dict__, indent=2)
 
     def load(self):
         file_full_path = self.get_file_path()

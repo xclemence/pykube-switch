@@ -15,6 +15,7 @@ application_path = (
     else dirname(abspath(__file__))
 )
 
+
 def shutdown():
     del globals()["engine"]
 

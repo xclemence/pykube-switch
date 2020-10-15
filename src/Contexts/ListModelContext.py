@@ -2,6 +2,7 @@ import inspect
 
 from PySide2.QtCore import QAbstractListModel, QModelIndex, Property
 
+
 class ListModelContext(QAbstractListModel):
     def __init__(self, items, type, parent=None):
         super(ListModelContext, self).__init__(parent)
@@ -49,5 +50,5 @@ class ListModelContext(QAbstractListModel):
         for field in self.get_schema():
             role_names[index] = field.encode()
             index += 1
-    
+
         return role_names

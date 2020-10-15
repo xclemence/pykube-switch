@@ -30,7 +30,7 @@ Popup {
             TextArea.flickable: TextArea {
                 wrapMode: TextEdit.WrapAnywhere
                 selectByMouse: true
-                text: model.password
+                text: root.model ? model.password : ''
                 onEditingFinished: {
                     root.model.password = text
                     root.passwordChanged()

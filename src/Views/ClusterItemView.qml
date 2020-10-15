@@ -43,7 +43,7 @@ Item {
             Circle {
                 Layout.leftMargin: 15
                 Layout.alignment: Qt.AlignVCenter
-                visible: root.model.is_current
+                visible: root.model && root.model.is_current
                 color: "green"
                 size: 20
             }
@@ -51,7 +51,7 @@ Item {
             Label {
                 Layout.leftMargin: 15
                 Layout.alignment: Qt.AlignVCenter
-                visible: root.model.has_password
+                visible: root.model && root.model.has_password
                 font.family: iconFont.name
 	            font.pixelSize: 20
 	            text: MD.icons.lock_outline
@@ -80,7 +80,8 @@ Item {
                     Layout.alignment: Qt.AlignVCenter
                     Layout.fillWidth: true
                     selectByMouse: true
-                    text: root.model.display_name
+                    text: root.model ? root.model.display_name : ''
+                    
                     onEditingFinished: {
                         root.model.display_name = text
                         root.dataChanged(root.model)

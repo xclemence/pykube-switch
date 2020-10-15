@@ -1,9 +1,9 @@
 import filecmp
 
 from shutil import copyfile
-from pathlib import Path
 
 from .PathService import find_available_name
+
 
 class ClusterConfigService:
     _config_directory = "configs"

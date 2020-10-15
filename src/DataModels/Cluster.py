@@ -12,4 +12,3 @@ class Cluster(object):
         self.file_name = file_name
         self.password = password
         self.server = server
-

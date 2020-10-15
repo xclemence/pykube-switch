@@ -64,7 +64,7 @@ class ClustersContext(QObject):
 
             self.clusters = ListModelContext(items, ClusterItemContext)
         except Exception as e:
-            print(e) 
+            print(e)
             ErrorService().send_error('Error during configurations loading')
 
     @Slot()
@@ -74,7 +74,7 @@ class ClustersContext(QObject):
     @Slot(str)
     def add_file(self, file_url):
         try:
-            
+
             new_cluster = self.item_service.create(file_url)
 
             self.clusters.append(new_cluster)

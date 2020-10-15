@@ -25,7 +25,7 @@ Item {
                 text: "Apply"
                 font.capitalization: Font.MixedCase 
                 onClicked: root.applyClicked()
-                enabled: !root.model.is_current && root.model.has_file
+                enabled: root.model && !root.model.is_current && root.model.has_file
             }
 
             Button {
@@ -55,7 +55,7 @@ Item {
             
             Button {
                 id: copyPasswordButton
-                enabled: model.has_password
+                enabled: model ? model.has_password : false
                 text: "Copy password"
                 font.capitalization: Font.MixedCase 
                 onClicked: root.copyPasswordClicked()

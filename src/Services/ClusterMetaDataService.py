@@ -5,6 +5,7 @@ from pathlib import Path
 
 from DataModels.Cluster import Cluster
 
+
 class ClusterMetaDataService:
     _meta_data_file_name = Path("clusters.json")
 

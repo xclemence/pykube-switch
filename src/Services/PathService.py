@@ -1,6 +1,6 @@
-import platform 
+import platform
 
-from pathlib import Path, PosixPath, WindowsPath
+from pathlib import Path
 from urllib.parse import unquote, urlparse
 
 
@@ -16,6 +16,7 @@ def url_to_path(file_uri):
         result = Path(file_uri_path_unquoted)
 
     return result
+
 
 def find_available_name(directory, file_name):
     index = 1
